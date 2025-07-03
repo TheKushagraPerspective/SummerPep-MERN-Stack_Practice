@@ -120,6 +120,28 @@ app.patch("/api/category/:id", async (req, res) => {
 
 
 
+app.delete("/api/category/:id" , async (req, res) => {
+    const id = req.params.id;
+    
+    try {
+        const deleteCategory = await Category.findByIdAndDelete(id);
+
+        if (!deleteCategory) {
+            return res.status(404).json({ msg: "Category not found" });
+        }
+
+        return res.status(200).json({
+            msg: "One Record Deleted Successfully",
+            data: updatedCategory
+        });
+    } catch (error) {
+        console.error("Error while Deleting category:", error);
+        return res.status(500).json({ msg: "Server Error", error: error.message });
+    }
+})
+
+
+
 // ----------------------------------------------------------------
 
 
