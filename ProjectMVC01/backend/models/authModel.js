@@ -16,9 +16,9 @@ class authModel {
     }//function
 
 
-    static signUp(name , email , password) {
+    static signUp(email , password , mobile , user_type , user_category) {
         return new Promise((resolve , reject) => {
-            connection.query(`INSERT INTO users (name , email , password) VALUES (? , ? , ?)` , [name , email , password] , (err ,result) => {
+            connection.query(`INSERT INTO users (email , password , mobile , user_type , user_category) VALUES (? , ? , ? , ? , ?)` , [email , password , mobile , user_type , user_category] , (err ,result) => {
                 if(err) {
                     reject(err);
                 }

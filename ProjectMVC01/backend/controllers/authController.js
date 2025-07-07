@@ -35,15 +35,23 @@ const doLogin = async (req , res) => {
 
 const doSignUp = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { email, password , mobile , user_type , user_category } = req.body;
 
         // Basic validation
-        if (!name || !email || !password) {
+        if (!email || !password || !mobile || !user_type || !user_category) {
             return res.status(400).json({ success: false, msg: "All fields are required" });
         }
 
+
+        // Check if user already exists
+        const existingUser = await authModel.login(email, password);
+        if(existingUser.length > 0) {
+            return res.status(409).json({ success: false, msg: "User already exists" });
+        }
+
+
         // Insert user using model
-        const signUpData = await authModel.signUp(name, email, password);
+        const signUpData = await authModel.signUp(email, password, mobile, user_type , user_category);
 
         if (!signUpData || !signUpData.insertId) {
             return res.status(500).json({ success: false, msg: "Signup failed" });
